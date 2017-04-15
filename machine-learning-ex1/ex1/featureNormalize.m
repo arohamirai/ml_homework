@@ -1,4 +1,7 @@
 function [X_norm, mu, sigma] = featureNormalize(X)
+%the extra column of 1’s
+%corresponding to x 0 = 1 has not yet been added to X
+
 %FEATURENORMALIZE Normalizes the features in X 
 %   FEATURENORMALIZE(X) returns a normalized version of X where
 %   the mean value of each feature is 0 and the standard deviation
@@ -24,9 +27,14 @@ sigma = zeros(1, size(X, 2));
 %               each feature. 
 %
 % Hint: You might find the 'mean' and 'std' functions useful.
-%       
+%    
+[m,n] = size(X);
+  
+mu = mean(X,1);
 
+sigma = std(X,1,1);
 
+X_norm = (X-repmat(mu,m,1))./repmat(sigma,m,1);
 
 
 
