@@ -36,7 +36,7 @@ load('ex4data1.mat');
 m = size(X, 1);
 
 % Randomly select 100 data points to display
-sel = randperm(size(X, 1));
+sel = randperm(size(X, 1));  % 功能是随机打乱一个数字序列。其内的参数决定了随机数的范围。
 sel = sel(1:100);
 
 displayData(X(sel, :));

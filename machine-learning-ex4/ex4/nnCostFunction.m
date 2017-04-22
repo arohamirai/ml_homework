@@ -63,67 +63,51 @@ Theta2_grad = zeros(size(Theta2));
 %
 
 %% feedforward
-% X = [ones(m,1) X];
+a1 = [ones(m,1) X];
 
-% a2 = sigmoid(X*Theta1);
-% a2 = [ones(hidden_layer_size,1) a2];
+z2 = a1*Theta1';
+a2 = sigmoid(z2);
 
-% h = sigmoid(a2*Theta2);
+z3 = [ones(m,1) a2];
+h = sigmoid(z3*Theta2');
 
 
 %% y vectorization
-% yy = zeros(m,num_labels)
-% for i = 1:m
-% 	yy(i,y(i)) = 1; 
-% end
-
-%% compute J without regularization
-% lh = log(h);
-% lh1 = log(1-h);
-
-% J = 1/m*sum(sum(yy.*lh + (1-yy).*lh1));
-
-%% compute J with regularization
-% J = J + sum(sum(Theta1.*Theta1)) + sum(sum(Theta2.*Theta2)) - Theta1(:,1)'*Theta1(:,1) -  Theta2(:,1)'*Theta2(:,1);
-
-
-	
-a1 = [ones(m,1) X];
-z2 = a1*Theta1;  % example in row
-a2 = sigmoid(z2);
-
-a2 = [ones(m,1) a2];
-z3 = a2*Theta2;
-h  = sigmoid(z3);
-
-% y vectorization
-	
-yy = zeros(m,num_labels)
+yy = zeros(m,num_labels);
 for i = 1:m
-	
- yy(i,y(i)) = 1; 
-
+	yy(i,y(i)) = 1; 
 end
 
-% compute J without regularization
-lh = log(h);
-lh1 = log(1-h);
-J = 1/m*sum(sum(yy.*lh + (1-yy).*lh1));
+%% compute J without regularization
+
+ J = -1/m*sum(sum(yy.*log(h)+ (1-yy).*log(1-h)));
 
 % compute J with regularization
-J = J + lambda/(2*m)...
-*(sum(sum(Theta1.*Theta1)) + sum(sum(Theta2.*Theta2))...
- - Theta1(:,1)'*Theta1(:,1) -  Theta2(:,1)'*Theta2(:,1));	
+J = J + lambda/(2*m)*(sum(sum(Theta1.*Theta1)) + sum(sum(Theta2.*Theta2))- Theta1(:,1)'*Theta1(:,1) -  Theta2(:,1)'*Theta2(:,1));	
 
+pause
 % compute backpropagation
 
-Theta2 = Theta2(:,2:end);
-Theta1 = Theta1(:,2:end);
+%Theta2 = Theta2(:,2:end);
+%Theta1 = Theta1(:,2:end);
 
-delta3 = h - yy;
-delta2 = Theta2'*delta3.*sigmoidGradient(z2);
+%delta3 = h - yy;
+%delta2 = Theta2'*delta3.*sigmoidGradient(z2);
 
 for i = 1:m
+	a1 = [1 X];
+	
+	z2 = [1 a1]*Theta1';
+	a2 = sigmoid(z2);
+	
+	z3 = [1 a2]*Theta2';
+	h = sigmoid(z3);
+
+	delta3 = h - yy(i,:);
+	delta2 = theta2'*delta3 .* sigmoidGradient(z2);
+	delta1 = theta1'*delta2 .* sigmoidGradient(a1);
+	
+
 
 
 
@@ -138,7 +122,7 @@ for i = 1:m
 % =========================================================================
 
 % Unroll gradients
-grad = [Theta1_grad(:) ; Theta2_grad(:)];
+%grad = [Theta1_grad(:) ; Theta2_grad(:)];
 
 
 end
