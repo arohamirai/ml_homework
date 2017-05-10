@@ -53,7 +53,7 @@ fprintf('\n==== Processed Email ====\n\n');
 
 % Process file
 l = 0;
-
+idx = 1;
 while ~isempty(email_contents)
 
     % Tokenize and also get rid of any punctuation
@@ -98,9 +98,13 @@ while ~isempty(email_contents)
     %
 
 
+[x y] =ind2sub(size(vocabList),find(cellfun(@(x)strcmp(x,str),vocabList)));
 
 
-
+if ~isempty(x)
+	word_indices(idx) = x;
+	idx = idx +1;
+end
 
 
 
