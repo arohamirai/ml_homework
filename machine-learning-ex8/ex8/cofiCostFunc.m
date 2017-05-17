@@ -40,6 +40,16 @@ Theta_grad = zeros(size(Theta));
 %                     partial derivatives w.r.t. to each element of Theta
 %
 
+predict = (X*Theta').*R;
+
+J = 1/2*sum(sum((predict - Y).*(predict - Y)));
+
+%X_grad = predict*Theta;
+Theta_grad = X'*predict;
+
+for i = 1:num_movies
+	for k = 1:num_features
+		X_grad(i,k) = sum((Theta*X(i,:)'.*R(i,:)' - y(i,:)).*Theta(:,k));
 
 
 
