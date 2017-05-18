@@ -25,10 +25,7 @@ for epsilon = min(pval):stepsize:max(pval)
 
 yout = pval<epsilon;
 
-tp = sum(yval == 1);
-
-%fp = sum((yout - yval) == 1);
-%fn = sum((yout - yval) == -1);
+tp = sum((yout == 1)&(yval == 1));
 
 fp = sum((yout == 1)&(yval == 0));
 fn = sum((yout == 0)&(yval == 1));
@@ -37,11 +34,6 @@ prec = tp/(tp+fp);
 rec = tp/(tp+fn);
 
 F1 = 2*prec*rec/(prec+rec);
-
-
-
-
-
 
 
     % =============================================================

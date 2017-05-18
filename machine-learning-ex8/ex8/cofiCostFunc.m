@@ -42,15 +42,12 @@ Theta_grad = zeros(size(Theta));
 
 predict = (X*Theta').*R;
 
-J = 1/2*sum(sum((predict - Y).*(predict - Y)));
+J = 1/2*sum(sum((predict - Y).*(predict - Y))) + lambda/2*sum(sum(Theta.^2)) + lambda/2*sum(sum(X.^2));
 
-%X_grad = predict*Theta;
-Theta_grad = X'*predict;
 
-for i = 1:num_movies
-	for k = 1:num_features
-		X_grad(i,k) = sum((Theta*X(i,:)'.*R(i,:)' - y(i,:)).*Theta(:,k));
 
+X_grad= (predict - Y)*Theta+ lambda*X;
+Theta_grad = (predict-Y)'*X + lambda*Theta;
 
 
 
